@@ -237,9 +237,6 @@ public class OpenAPI3RouterBuilderImpl implements RouterBuilder {
   public Router createRouter() {
     Router router = Router.router(vertx);
     Route globalRoute = router.route();
-    if (bodyHandler != null) {
-      globalRoute.handler(bodyHandler);
-    }
     globalHandlers.forEach(globalRoute::handler);
 
     for (OperationImpl operation : operations.values()) {
@@ -260,6 +257,10 @@ public class OpenAPI3RouterBuilderImpl implements RouterBuilder {
       );
       if (authnHandler != null) {
         handlersToLoad.add(authnHandler);
+      }
+
+      if (bodyHandler != null) {
+        handlersToLoad.add(bodyHandler);
       }
 
       // Generate ValidationHandler
